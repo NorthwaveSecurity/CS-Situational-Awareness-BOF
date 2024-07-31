@@ -150,9 +150,9 @@ alias env {
 beacon_command_register(
 "ldapsearch", 
 "BOF - Perform LDAP search.", 
-"ldapsearch <query> [comma_separated_attributes] [result_count] [DC hostname or IP] [Distingished Name to use]
+"ldapsearch <query> [comma_separated_attributes] [result_count] [scope_of_search] [DC hostname or IP] [Distingished Name to use]
 	\"\" works as a default for attributes (get all) DC hostname / IP (use Primary DC) and distingished name (use Base domain Level)
-	0 works as default for result_count (get all)
+	0 works as default for result_count (get all). For scope_of_search, use 1 [LDAP_SCOPE_BASE], 2 [LDAP_SCOPE_ONELEVEL] or 3 [LDAP_SCOPE_SUBTREE] (3 is used by default)
 
 Important - To add in ACLs so Bloodhound can draw relationships between objects (see external BofHound tool), add nTSecurityDescriptor in the attributes list, like so:
 ldapsearch <query> *,ntsecuritydescriptor ...
@@ -167,7 +167,7 @@ Useful queries (queries are just an example, edit where necessary to make it OPS
 If this fails with an error about paging not being supported you can try to use nonpagedldapsearch instead (its unregistered but has the same arguments)");
 
 alias ldapsearch {
-	local('$args $attributes $result_limit $hostname $domain');
+	local('$args $attributes $result_limit $scope $hostname $domain');
 	
 	if(size(@_) < 2)
 	{
@@ -177,10 +177,11 @@ alias ldapsearch {
 
 	$attributes = iff(-istrue $3, $3, "");
 	$result_limit = iff(-istrue $4, $4, 0);
-	$hostname = iff(-istrue $5, $5, "");
-	$domain = iff(-istrue $6, $6, "");
+	$scope = iff(-istrue $5, $5, 3);
+	$hostname = iff(-istrue $6, $6, "");
+	$domain = iff(-istrue $7, $7, "");
 
-	$args   = bof_pack($1, "zzizz", $2, $attributes, $result_limit, $hostname, $domain);
+	$args   = bof_pack($1, "zziizz", $2, $attributes, $result_limit, $scope, $hostname, $domain);
 
 	# execute it.
 	beacon_inline_execute($1, readbof($1, "ldapsearch", $null, "T1018, T1069.002, T1087.002, T1087.003, T1087.004, T1482"), "go", $args);
@@ -696,6 +697,29 @@ beacon_command_register(
 	"netGroupListMembers: <Group Name> <opt: servername>"
 );
 
+sub bnetlocalgroup2{
+	local('$args $server $group');
+	
+	$group = iff(-istrue $2, $2, "");
+	$server = iff(-istrue $3, $3, "");
+	
+	$args = bof_pack($1, "ZZ", $server, $group);
+	beacon_inline_execute($1, readbof($1, "netlocalgroup2", $null, "T1069.001"), "go", $args);
+}
+
+alias netLocalGroupListMembers2 {
+	bnetlocalgroup2($1, $2, $3);
+}
+
+beacon_command_register(
+	"netLocalGroupListMembers2",
+	"List the members of the specified group in this server (or specified server if given). Output is compatible with bofhound",
+	"netLocalGroupListMembers2: <opt: Group Name> <opt: servername>
+	use \"\" for group name to query all interesting local groups
+		
+Note: Output from this BOF is compatible with bofhound"
+);
+
 sub bschtasksenum{
 	local('$args');
 	$args = bof_pack($1, "Z", iff(-istrue $2, $2, ""));
@@ -1145,6 +1169,29 @@ beacon_command_register(
 	"Synopsis: netsession <computer> "
 );
 
+alias netsession2 {
+	local('$args $hostname $method $dnsserver');
+
+	$hostname = iff(-istrue $2, $2, "");
+	$method = iff(-istrue $3, $3, 1);
+	$dnsserver = iff(-istrue $4, $4, "");
+
+	$args = bof_pack($1, "Zsz", $hostname, $method, $dnsserver);
+	beacon_inline_execute($1, readbof($1, "get-netsession2", $null, "T1049"), "go", $args);     #T1049 is a loose match
+}
+
+beacon_command_register(
+	"netsession2",
+	"list sessions on server. Output is compatible with bofhound",
+	"Usage: netsession2 <opt: computer> <opt: Resolution Method> <opt: DNS Server>
+	Resolution methods: 
+		1 = DNS (Default)
+		2 = NetWkstaGetInfo
+
+Note: Output from this BOF is compatible with bofhound"
+);
+
+
 
 alias resources {
 	beacon_inline_execute($1, readbof($1, "resources", $null, "T1082"), "go", $null);
@@ -1235,6 +1282,12 @@ beacon_command_register(
 alias enumLocalSessions{
 	beacon_inline_execute($1, readbof($1, "enumlocalsessions", $null, "T1033"), "go", $null);
 }
+
+beacon_command_register(
+	"enumLocalSessions",
+	"Enumerate the currently attached user sessions both local and over rdp",
+	"Usage: enumLocalSessions"
+);
 
 alias findLoadedModule{
 	local('$iswow64 $modname $procname $args');
@@ -1449,6 +1502,21 @@ beacon_command_register(
 	"netloggedon <\\computername>"
 );
 
+alias netloggedon2{
+	local('$args $name');
+	$name = iff(-istrue $2, $2, "");
+	$args = bof_pack($1, "Zi", $name, 0);
+	beacon_inline_execute($1, readbof($1, "netloggedon2", $null, "T1049"), "go", $args);
+}
+
+beacon_command_register(
+	"netloggedon2",
+	"Returns users logged on the local (or a remote) machine via NetWkstaUserEnum- administrative rights needed. Output is compatible with bofhound",
+	"Usage: netloggedon2 <opt: computername>
+	
+Note: Output from this BOF is compatible with bofhound"
+);
+
 alias netuptime{
 	local('$args $name');
 	$name = iff(-istrue $2, $2, "");
@@ -1485,3 +1553,17 @@ Note:    nettime will return the time of the localhost if target is null
 "
 );
 
+alias regsession{
+	local('$args $name');
+	$name = iff(-istrue $2, $2, "");
+	$args = bof_pack($1, "z", $name);
+	beacon_inline_execute($1, readbof($1, "regsession", $null, "T1049"), "go", $args);
+}
+
+beacon_command_register(
+	"regsession",
+	"Returns users logged on the local (or a remote) machine via the registry - administrative rights needed. Output is compatible with bofhound",
+	"Usage: regsession <opt: computername>
+	
+Note: Output from this BOF is compatible with bofhound"
+);
