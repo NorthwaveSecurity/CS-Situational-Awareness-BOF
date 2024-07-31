@@ -30,6 +30,7 @@ WINBASEAPI int WINAPI KERNEL32$FileTimeToLocalFileTime (CONST FILETIME *lpFileTi
 WINBASEAPI int WINAPI KERNEL32$FileTimeToSystemTime (CONST FILETIME *lpFileTime, LPSYSTEMTIME lpSystemTime);
 WINBASEAPI int WINAPI KERNEL32$GetDateFormatW (LCID Locale, DWORD dwFlags, CONST SYSTEMTIME *lpDate, LPCWSTR lpFormat, LPWSTR lpDateStr, int cchDate);
 WINBASEAPI VOID WINAPI KERNEL32$GetSystemTimeAsFileTime (LPFILETIME lpSystemTimeAsFileTime);
+WINBASEAPI VOID WINAPI KERNEL32$GetSystemTime (LPFILETIME lpSystemTime);
 WINBASEAPI VOID WINAPI KERNEL32$GetLocalTime (LPSYSTEMTIME lpSystemTime);
 WINBASEAPI WINBOOL WINAPI KERNEL32$SystemTimeToFileTime (CONST SYSTEMTIME *lpSystemTime, LPFILETIME lpFileTime);
 WINBASEAPI WINBOOL WINAPI KERNEL32$SystemTimeToTzSpecificLocalTime (CONST TIME_ZONE_INFORMATION *lpTimeZoneInformation, CONST SYSTEMTIME *lpUniversalTime, LPSYSTEMTIME lpLocalTime);
@@ -89,7 +90,62 @@ DECLSPEC_IMPORT int WINAPI KERNEL32$GetLocaleInfoEx(LPCWSTR lpLocaleName, LCTYPE
 WINBASEAPI int WINAPI KERNEL32$GetSystemDefaultLocaleName(LPCWSTR lpLocaleName, int cchLocaleName);
 DECLSPEC_IMPORT LCID WINAPI KERNEL32$LocaleNameToLCID(LPCWSTR lpName, DWORD dwFlags);
 DECLSPEC_IMPORT int WINAPI KERNEL32$GetDateFormatEx(LPCWSTR lpLocaleName, DWORD dwFlags, const SYSTEMTIME *lpData, LPCWSTR lpFormat, LPWSTR lpDateStr, int cchDate, LPCWSTR lpCalendar);
-
+DECLSPEC_IMPORT LONG WINAPI KERNEL32$InterlockedCompareExchange(LONG *Destination,LONG ExChange, LONG Comperand);
+DECLSPEC_IMPORT void WINAPI KERNEL32$InitializeCriticalSection(LPCRITICAL_SECTION lpCriticalSection );
+DECLSPEC_IMPORT void WINAPI KERNEL32$DeleteCriticalSection(LPCRITICAL_SECTION lpCriticalSection );
+DECLSPEC_IMPORT void WINAPI KERNEL32$EnterCriticalSection(LPCRITICAL_SECTION lpCriticalSection );
+DECLSPEC_IMPORT void WINAPI KERNEL32$LeaveCriticalSection(LPCRITICAL_SECTION lpCriticalSection );
+DECLSPEC_IMPORT DWORD WINAPI KERNEL32$GetCurrentThreadId();
+DECLSPEC_IMPORT BOOL WINAPI KERNEL32$AreFileApisANSI();
+DECLSPEC_IMPORT LPWSTR WINAPI KERNEL32$CharLowerW(LPWSTR lpwsz);
+DECLSPEC_IMPORT LPWSTR WINAPI KERNEL32$CharLowerW(LPWSTR lpwsz);
+DECLSPEC_IMPORT LPWSTR WINAPI KERNEL32$CharUpperW(LPWSTR lpwsz);
+DECLSPEC_IMPORT HANDLE WINAPI KERNEL32$CreateFileA(LPCSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, LPSECURITY_ATTRIBUTES lpSecurityAttributes, DWORD dwCreationDisposition, DWORD dwFlagsAndAttributes, HANDLE hTemplateFile);
+DECLSPEC_IMPORT HANDLE WINAPI KERNEL32$CreateFileMappingA(HANDLE hFile, LPSECURITY_ATTRIBUTES lpFileMappingAttributes, DWORD flProtect, DWORD dwMaximumSizeHigh, DWORD dwMaximumSizeLow, LPCSTR lpName);
+DECLSPEC_IMPORT HANDLE WINAPI KERNEL32$CreateFileMappingW(HANDLE hFile, LPSECURITY_ATTRIBUTES lpFileMappingAttributes, DWORD flProtect, DWORD dwMaximumSizeHigh, DWORD dwMaximumSizeLow, LPCWSTR lpName);
+DECLSPEC_IMPORT HANDLE WINAPI KERNEL32$CreateMutexW(LPSECURITY_ATTRIBUTES lpMutexAttributes, BOOL bInitialOwner, LPCWSTR lpName);
+DECLSPEC_IMPORT BOOL WINAPI KERNEL32$DeleteFileA(LPCSTR lpFileName);
+DECLSPEC_IMPORT BOOL WINAPI KERNEL32$FlushFileBuffers(HANDLE hFile);
+DECLSPEC_IMPORT DWORD WINAPI KERNEL32$FormatMessageW(DWORD dwFlags, LPCVOID lpSource, DWORD dwMessageId, DWORD dwLanguageId, LPWSTR lpBuffer, DWORD nSize, va_list *Arguments);
+DECLSPEC_IMPORT BOOL WINAPI KERNEL32$GetDiskFreeSpaceA(LPCSTR lpRootPathName, LPDWORD lpSectorsPerCluster, LPDWORD lpBytesPerSector, LPDWORD lpNumberOfFreeClusters, LPDWORD lpTotalNumberOfClusters);
+DECLSPEC_IMPORT BOOL WINAPI KERNEL32$GetDiskFreeSpaceW(LPCWSTR lpRootPathName, LPDWORD lpSectorsPerCluster, LPDWORD lpBytesPerSector, LPDWORD lpNumberOfFreeClusters, LPDWORD lpTotalNumberOfClusters);
+DECLSPEC_IMPORT DWORD WINAPI KERNEL32$GetFileAttributesA(LPCSTR lpFileName);
+DECLSPEC_IMPORT BOOL WINAPI KERNEL32$GetFileAttributesExW(LPCWSTR lpFileName, GET_FILEEX_INFO_LEVELS fInfoLevelId, LPVOID lpFileInformation);
+DECLSPEC_IMPORT DWORD WINAPI KERNEL32$GetFullPathNameA(LPCSTR lpFileName, DWORD nBufferLength, LPSTR lpBuffer, LPSTR *lpFilePart);
+DECLSPEC_IMPORT FARPROC WINAPI KERNEL32$GetProcAddressA(HMODULE hModule, LPCSTR lpProcName);
+DECLSPEC_IMPORT void WINAPI KERNEL32$GetSystemInfo(LPSYSTEM_INFO lpSystemInfo);
+DECLSPEC_IMPORT DWORD WINAPI KERNEL32$GetTempPathA(DWORD nBufferLength, LPSTR lpBuffer);
+DECLSPEC_IMPORT DWORD WINAPI KERNEL32$GetTempPathW(DWORD nBufferLength, LPWSTR lpBuffer);
+DECLSPEC_IMPORT BOOL WINAPI KERNEL32$GetVersionExA(LPOSVERSIONINFOA lpVersionInformation);
+DECLSPEC_IMPORT BOOL WINAPI KERNEL32$GetVersionExW(LPOSVERSIONINFOW lpVersionInformation);
+DECLSPEC_IMPORT HANDLE WINAPI KERNEL32$HeapCreate(DWORD flOptions, SIZE_T dwInitialSize, SIZE_T dwMaximumSize);
+DECLSPEC_IMPORT BOOL WINAPI KERNEL32$HeapDestroy(HANDLE hHeap);
+DECLSPEC_IMPORT SIZE_T WINAPI KERNEL32$HeapSize(HANDLE hHeap, DWORD dwFlags, LPCVOID lpMem);
+DECLSPEC_IMPORT BOOL WINAPI KERNEL32$HeapValidate(HANDLE hHeap, DWORD dwFlags, LPCVOID lpMem);
+DECLSPEC_IMPORT SIZE_T WINAPI KERNEL32$HeapCompact(HANDLE hHeap, DWORD dwFlags);
+DECLSPEC_IMPORT HMODULE WINAPI KERNEL32$LoadLibraryW(LPCWSTR lpLibFileName);
+DECLSPEC_IMPORT BOOL WINAPI KERNEL32$LockFile(HANDLE hFile, DWORD dwFileOffsetLow, DWORD dwFileOffsetHigh, DWORD nNumberOfBytesToLockLow, DWORD nNumberOfBytesToLockHigh);
+DECLSPEC_IMPORT BOOL WINAPI KERNEL32$LockFileEx(HANDLE hFile, DWORD dwFlags, DWORD dwReserved, DWORD nNumberOfBytesToLockLow, DWORD nNumberOfBytesToLockHigh, LPOVERLAPPED lpOverlapped);
+DECLSPEC_IMPORT LPVOID WINAPI KERNEL32$MapViewOfFile(HANDLE hFileMappingObject, DWORD dwDesiredAccess, DWORD dwFileOffsetHigh, DWORD dwFileOffsetLow, SIZE_T dwNumberOfBytesToMap);
+DECLSPEC_IMPORT int WINAPI KERNEL32$MultiByteToWideChar(UINT CodePage, DWORD dwFlags, LPCCH lpMultiByteStr, int cbMultiByte, LPWSTR lpWideCharStr, int cchWideChar);
+DECLSPEC_IMPORT BOOL WINAPI KERNEL32$QueryPerformanceCounter(LARGE_INTEGER *lpPerformanceCount);
+DECLSPEC_IMPORT BOOL WINAPI KERNEL32$SetEndOfFile(HANDLE hFile);
+DECLSPEC_IMPORT DWORD WINAPI KERNEL32$SetFilePointer(HANDLE hFile, LONG lDistanceToMove, PLONG lpDistanceToMoveHigh, DWORD dwMoveMethod);
+DECLSPEC_IMPORT BOOL WINAPI KERNEL32$UnlockFile(HANDLE hFile, DWORD dwFileOffsetLow, DWORD dwFileOffsetHigh, DWORD nNumberOfBytesToUnlockLow, DWORD nNumberOfBytesToUnlockHigh);
+DECLSPEC_IMPORT BOOL WINAPI KERNEL32$UnlockFileEx(HANDLE hFile, DWORD dwReserved, DWORD nNumberOfBytesToUnlockLow, DWORD nNumberOfBytesToUnlockHigh, LPOVERLAPPED lpOverlapped);
+DECLSPEC_IMPORT BOOL WINAPI KERNEL32$UnmapViewOfFile(LPCVOID lpBaseAddress);
+DECLSPEC_IMPORT BOOL WINAPI KERNEL32$WriteFile(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite, LPDWORD lpNumberOfBytesWritten, LPOVERLAPPED lpOverlapped);
+DECLSPEC_IMPORT HANDLE WINAPI KERNEL32$CreateEventExW(LPSECURITY_ATTRIBUTES lpEventAttributes, LPCWSTR lpName, DWORD dwFlags, DWORD dwDesiredAccess);
+DECLSPEC_IMPORT DWORD WINAPI KERNEL32$WaitForSingleObjectEx(HANDLE hHandle, DWORD dwMilliseconds, BOOL bAlertable);
+DECLSPEC_IMPORT BOOL WINAPI KERNEL32$SetFilePointerEx(HANDLE hFile, LARGE_INTEGER liDistanceToMove, PLARGE_INTEGER lpNewFilePointer, DWORD dwMoveMethod);
+DECLSPEC_IMPORT BOOL WINAPI KERNEL32$GetFileInformationByHandleEx(HANDLE hFile, FILE_INFO_BY_HANDLE_CLASS FileInformationClass, LPVOID lpFileInformation, DWORD dwBufferSize);
+DECLSPEC_IMPORT PVOID WINAPI KERNEL32$MapViewOfFileFromApp(HANDLE hFileMappingObject, ULONG DesiredAccess, ULONG64 FileOffset, SIZE_T NumberOfBytesToMap);
+DECLSPEC_IMPORT HANDLE WINAPI KERNEL32$CreateFile2(LPCWSTR lpFileName, DWORD dwDesiredAccess, DWORD dwShareMode, DWORD dwCreationDisposition, LPCREATEFILE2_EXTENDED_PARAMETERS pCreateExParams);
+DECLSPEC_IMPORT HMODULE WINAPI KERNEL32$LoadPackagedLibrary(LPCWSTR lpwLibFileName, DWORD Reserved);
+DECLSPEC_IMPORT void WINAPI KERNEL32$GetNativeSystemInfo(LPSYSTEM_INFO lpSystemInfo);
+DECLSPEC_IMPORT void WINAPI KERNEL32$OutputDebugStringA(LPCSTR lpOutputString);
+DECLSPEC_IMPORT void WINAPI KERNEL32$OutputDebugStringW(LPCWSTR lpOutputString);
+DECLSPEC_IMPORT HANDLE WINAPI KERNEL32$CreateFileMappingFromApp(HANDLE hFile, PSECURITY_ATTRIBUTES SecurityAttributes, ULONG PageProtection, ULONG64 MaximumSize, LPCWSTR Name);
 
 //WTSAPI32
 DECLSPEC_IMPORT DWORD WINAPI WTSAPI32$WTSEnumerateSessionsA(LPVOID, DWORD, DWORD, PWTS_SESSION_INFO*, DWORD*);
@@ -265,6 +321,7 @@ WINADVAPI WINBOOL WINAPI ADVAPI32$ConvertSecurityDescriptorToStringSecurityDescr
 WINADVAPI WINBOOL WINAPI ADVAPI32$StartServiceA(SC_HANDLE hService,DWORD dwNumServiceArgs,LPCSTR *lpServiceArgVectors);
 WINADVAPI WINBOOL WINAPI ADVAPI32$ControlService(SC_HANDLE hService,DWORD dwControl,LPSERVICE_STATUS lpServiceStatus);
 WINADVAPI WINBOOL WINAPI ADVAPI32$EnumDependentServicesA(SC_HANDLE hService,DWORD dwServiceState,LPENUM_SERVICE_STATUSA lpServices,DWORD cbBufSize,LPDWORD pcbBytesNeeded,LPDWORD lpServicesReturned);
+WINADVAPI WINBOOL WINAPI ADVAPI32$GetUserNameA(LPSTR lpBuffer, LPDWORD pcbBuffer);
 
 //NTDLL
 WINBASEAPI NTSTATUS NTAPI NTDLL$NtCreateFile(PHANDLE FileHandle,ACCESS_MASK DesiredAccess,POBJECT_ATTRIBUTES ObjectAttributes,PIO_STATUS_BLOCK IoStatusBlock,PLARGE_INTEGER AllocationSize,ULONG FileAttributes,ULONG ShareAccess,ULONG CreateDisposition,ULONG CreateOptions,PVOID EaBuffer,ULONG EaLength);
@@ -464,6 +521,7 @@ DECLSPEC_IMPORT WINBOOL WINAPI VERSION$VerQueryValueA(LPCVOID pBlock, LPCSTR lpS
 #define KERNEL32$FileTimeToSystemTime  FileTimeToSystemTime 
 #define KERNEL32$GetDateFormatW  GetDateFormatW 
 #define KERNEL32$GetSystemTimeAsFileTime  GetSystemTimeAsFileTime 
+#define KERNEL32$GetSystemTime  GetSystemTime 
 #define KERNEL32$GetLocalTime  GetLocalTime 
 #define KERNEL32$SystemTimeToFileTime  SystemTimeToFileTime 
 #define KERNEL32$SystemTimeToTzSpecificLocalTime  SystemTimeToTzSpecificLocalTime 
@@ -523,6 +581,62 @@ DECLSPEC_IMPORT WINBOOL WINAPI VERSION$VerQueryValueA(LPCVOID pBlock, LPCSTR lpS
 #define KERNEL32$GetSystemDefaultLocaleName GetSystemDefaultLocaleName
 #define KERNEL32$LocaleNameToLCID LocaleNameToLCID
 #define KERNEL32$GetDateFormatEx GetDateFormatEx
+#define KERNEL32$InterlockedCompareExchange InterlockedCompareExchange
+#define KERNEL32$InitializeCriticalSection InitializeCriticalSection
+#define KERNEL32$DeleteCriticalSection DeleteCriticalSection
+#define KERNEL32$EnterCriticalSection EnterCriticalSection
+#define KERNEL32$LeaveCriticalSection LeaveCriticalSection
+#define KERNEL32$GetCurrentThreadId GetCurrentThreadId
+#define KERNEL32$AreFileApisANSI AreFileApisANSI
+#define KERNEL32$CharLowerW CharLowerW
+#define KERNEL32$CharLowerW CharLowerW
+#define KERNEL32$CharUpperW CharUpperW
+#define KERNEL32$CreateFileA CreateFileA
+#define KERNEL32$CreateFileMappingA CreateFileMappingA
+#define KERNEL32$CreateFileMappingW CreateFileMappingW
+#define KERNEL32$CreateMutexW CreateMutexW
+#define KERNEL32$DeleteFileA DeleteFileA
+#define KERNEL32$FlushFileBuffers FlushFileBuffers
+#define KERNEL32$FormatMessageW FormatMessageW
+#define KERNEL32$GetDiskFreeSpaceA GetDiskFreeSpaceA
+#define KERNEL32$GetDiskFreeSpaceW GetDiskFreeSpaceW
+#define KERNEL32$GetFileAttributesA GetFileAttributesA
+#define KERNEL32$GetFileAttributesExW GetFileAttributesExW
+#define KERNEL32$GetFullPathNameA GetFullPathNameA
+#define KERNEL32$GetProcAddressA GetProcAddressA
+#define KERNEL32$GetSystemInfo GetSystemInfo
+#define KERNEL32$GetTempPathA GetTempPathA
+#define KERNEL32$GetTempPathW GetTempPathW
+#define KERNEL32$GetVersionExA GetVersionExA
+#define KERNEL32$GetVersionExW GetVersionExW
+#define KERNEL32$HeapCreate HeapCreate
+#define KERNEL32$HeapDestroy HeapDestroy
+#define KERNEL32$HeapSize HeapSize
+#define KERNEL32$HeapValidate HeapValidate
+#define KERNEL32$HeapCompact HeapCompact
+#define KERNEL32$LoadLibraryW LoadLibraryW
+#define KERNEL32$LockFile LockFile
+#define KERNEL32$LockFileEx LockFileEx
+#define KERNEL32$MapViewOfFile MapViewOfFile
+#define KERNEL32$MultiByteToWideChar MultiByteToWideChar
+#define KERNEL32$QueryPerformanceCounter QueryPerformanceCounter
+#define KERNEL32$SetEndOfFile SetEndOfFile
+#define KERNEL32$SetFilePointer SetFilePointer
+#define KERNEL32$UnlockFile UnlockFile
+#define KERNEL32$UnlockFileEx UnlockFileEx
+#define KERNEL32$UnmapViewOfFile UnmapViewOfFile
+#define KERNEL32$WriteFile WriteFile
+#define KERNEL32$CreateEventExW CreateEventExW
+#define KERNEL32$WaitForSingleObjectEx WaitForSingleObjectEx
+#define KERNEL32$SetFilePointerEx SetFilePointerEx
+#define KERNEL32$GetFileInformationByHandleEx GetFileInformationByHandleEx
+#define KERNEL32$MapViewOfFileFromApp MapViewOfFileFromApp
+#define KERNEL32$CreateFile2 CreateFile2
+#define KERNEL32$LoadPackagedLibrary LoadPackagedLibrary
+#define KERNEL32$GetNativeSystemInfo GetNativeSystemInfo
+#define KERNEL32$OutputDebugStringA OutputDebugStringA
+#define KERNEL32$OutputDebugStringW OutputDebugStringW
+#define KERNEL32$CreateFileMappingFromApp CreateFileMappingFromApp
 
 #define WTSAPI32$WTSEnumerateSessionsA WTSEnumerateSessionsA
 #define WTSAPI32$WTSQuerySessionInformationA WTSQuerySessionInformationA
@@ -627,6 +741,7 @@ DECLSPEC_IMPORT WINBOOL WINAPI VERSION$VerQueryValueA(LPCVOID pBlock, LPCSTR lpS
 #define USER32$GetClassNameA GetClassNameA
 #define USER32$EnumChildWindows EnumChildWindows
 #define SECUR32$GetUserNameExA  GetUserNameExA 
+#define ADVAPI32$GetUserNameA GetUserNameA
 #define SHLWAPI$StrStrIA StrStrIA
 #define ADVAPI32$OpenProcessToken  OpenProcessToken 
 #define ADVAPI32$GetTokenInformation  GetTokenInformation 
